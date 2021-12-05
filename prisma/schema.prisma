@@ -21,8 +21,7 @@ enum BalanceOperationStatus {
 }
 
 model Account {
-  id              String @id @default(uuid())
-  wallet          String @unique
+  id              String @id
   balance         Int    @default(0)
   last_balance_id String
 
