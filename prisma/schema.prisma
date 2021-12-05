@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native"]
 }
 
@@ -8,11 +8,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
+enum BalanceOperationTypes {
+  purchase
+  exchange
+  internalOrder
+}
+
+enum BalanceOperationStatus {
+  pending
+  finished
+  failed
+}
+
+model Account {
+  id              String @id @default(uuid())
+  wallet          String @unique
+  balance         Int    @default(0)
+  last_balance_id String
+
+  balanceOperations BalanceOperation[]
+  plants            OwnedPlant[]
+
+  water Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model BalanceOperation {
   id Int @id @default(autoincrement())
 
-  openHour  DateTime
-  closeHour DateTime
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
 
-  weekDay Int
+  amount Int
+
+  type        BalanceOperationTypes
+  status      BalanceOperationStatus?
+  description String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Plant {
+  id String @id @default(uuid())
+
+  name        String
+  photos      String
+  description String
+
+  harvestTime Int
+  amount      Int
+  water       Int
+  reward      Int
+
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  ownedPlants OwnedPlant[]
+}
+
+model OwnedPlant {
+  id String @id @default(uuid())
+
+  plantId String
+  plant   Plant  @relation(fields: [plantId], references: [id])
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  harvested Boolean @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
