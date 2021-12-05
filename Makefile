@@ -12,13 +12,17 @@ down:
 
 # TEST ENVIRONMENT
 
-test-migrate-database: stop-database
+test-migrate-database: stop-database test-database
 	@docker-compose run --rm --entrypoint="node_modules/.bin/prisma migrate dev --name init --skip-generate" test
 .PHONY: test-migrate-database
 
 stop-test-database:
 	@docker-compose stop test-database
 .PHONY: stop-test-database
+
+test-database:
+	@docker-compose up -d test-database
+.PHONY: test-database
 
 test-unit: test-migrate-database
 	@TEST_SUITE=unit docker-compose run --rm test
@@ -42,7 +46,7 @@ database: stop-test-database
 .PHONY: database
 
 migrate-database:
-	@docker-compose run --rm --entrypoint="node_modules/.bin/prisma migrate deploy" server
+	@docker-compose run --rm --entrypoint="node_modules/.bin/prisma migrate dev --name init --skip-generate" server
 .PHONY: migrate-database
 
 server: database migrate-database

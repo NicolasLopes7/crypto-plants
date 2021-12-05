@@ -23,7 +23,7 @@ services:
     - ${DB_PORT}:5432
 
   test-database:
-    container_name: database
+    container_name: test_database
     image: postgres:13
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -47,5 +47,6 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
+      - DATABASE_URL=postgresql://crypto-plant:root@database:5432/crypto-plants?connect_timeout=300
     ports:
       - "3000:3000"
