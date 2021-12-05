@@ -5,6 +5,7 @@ module.exports = {
   rootDir: '../../',
   testEnvironment: 'node',
   verbose: true,
+  testTimeout: 60000,
   bail: isCI,
   collectCoverage: true,
   collectCoverageFrom: [
