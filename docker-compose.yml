@@ -13,18 +13,24 @@ services:
       - DOTENV_PATH=.env
 
   database:
-    image: postgres:10.1-alpine
+    container_name: database
+    image: postgres:13
     environment:
-      - POSTGRES_PASSWORD=crypto-plants123$$
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 5432
+    - ${DB_PORT}:5432
 
   test-database:
-    image: postgres:10.1-alpine
+    container_name: database
+    image: postgres:13
     environment:
-      - POSTGRES_PASSWORD=cipagarme123$$
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 5432
+    - ${DB_PORT}:5432
 
   test:
     extends: base
@@ -33,11 +39,11 @@ services:
       - NODE_ENV=test
     command: yarn test-${TEST_SUITE}
     links:
-      - database
+      - test-database
 
   server:
     extends: base
-    command: yarn start
+    command: yarn dev
     environment:
       - NODE_ENV=development
       - PORT=3000

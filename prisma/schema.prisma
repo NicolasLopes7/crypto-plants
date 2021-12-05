@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Test {
+  id Int @id @default(autoincrement())
+
+  openHour  DateTime
+  closeHour DateTime
+
+  weekDay Int
+}

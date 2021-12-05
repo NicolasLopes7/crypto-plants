@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "^3.6.0",
+    "@prisma/client": "3.6.0",
     "aws-sdk": "^2.1043.0",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
@@ -31,7 +31,7 @@
     "nock": "^13.2.1",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
-    "prisma": "^3.6.0",
+    "prisma": "3.6.0",
     "rimraf": "^3.0.2",
     "sinon": "^12.0.1",
     "ts-jest": "^27.0.7",
@@ -44,8 +44,8 @@
     "start": "node ./dist/server.js",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "test:unit": "jest --config tests/unit/jest.config.js --forceExit",
-    "test:integration": "jest --config tests/integration/jest.config.js --forceExit --runInBand",
+    "test-unit": "jest --config tests/unit/jest.config.js --forceExit",
+    "test-integration": "jest --config tests/integration/jest.config.js --forceExit --runInBand",
     "test": "yarn test:unit && yarn test:integration",
     "ci": "yarn format && yarn test"
   },

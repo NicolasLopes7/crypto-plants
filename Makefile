@@ -11,50 +11,44 @@ down:
 .PHONY: down
 
 # TEST ENVIRONMENT
-test-setup-database:
-	@docker-compose run --rm --entrypoint="node_modules/.bin/sequelize db:create --config src/config/database.js" test
-.PHONY: test-setup-database
 
-test-migrate-database:
-	@docker-compose run --rm --entrypoint="node_modules/.bin/sequelize db:migrate --config src/config/database.js --migrations-path src/database/migrations/" test
+test-migrate-database: stop-database
+	@docker-compose run --rm --entrypoint="node_modules/.bin/prisma migrate dev --name init --skip-generate" test
 .PHONY: test-migrate-database
 
-test-migrate-undo-database:
-	@docker-compose run --rm --entrypoint="node_modules/.bin/sequelize db:migrate:undo --config src/config/database.js --migrations-path src/database/migrations/" test
-.PHONY: test-migrate-undo-database
+stop-test-database:
+	@docker-compose stop test-database
+.PHONY: stop-test-database
 
-test-unit: test-database test-migrate-database
+test-unit: test-migrate-database
 	@TEST_SUITE=unit docker-compose run --rm test
 .PHONY: test-unit
 
-test-integration: test-database test-migrate-database
+test-integration: test-migrate-database
 	@TEST_SUITE=integration docker-compose run --rm test
 .PHONY: test-integration
 
-test:  test-database test-migrate-database test-unit test-integration
+test:  test-migrate-database test-unit test-integration
 .PHONY: test
 
 # PRODUCTION ENVIRONMENT
-database:
+stop-database:
+	@docker-compose stop database
+.PHONY: stop-database
+
+database: stop-test-database
 	@docker-compose up -d database
 	@sleep 2
 .PHONY: database
 
-setup-database:
-	@docker-compose run --rm server node_modules/.bin/sequelize db:create --config src/config/database.js
-.PHONY: setup-database
-
 migrate-database:
-	@docker-compose run --rm --entrypoint="node_modules/.bin/sequelize db:migrate --config src/config/database.js --migrations-path src/database/migrations/" server
+	@docker-compose run --rm --entrypoint="node_modules/.bin/prisma migrate deploy" server
 .PHONY: migrate-database
 
-migrate-undo-database:
-	@docker-compose run --rm server node_modules/.bin/sequelize db:migrate:undo --config src/config/database.js --migrations-path src/database/migrations/
-.PHONY: migrate-undo-database
-
 server: database migrate-database
-	@docker-compose up -d server
+	@docker-compose up server
 .PHONY: server
+
 
 all: server
 .PHONY: all
