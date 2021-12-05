@@ -9,6 +9,7 @@ COPY scripts/start_server.sh /crypto-plants
 COPY yarn.lock /crypto-plants
 COPY src /crypto-plants/src
 COPY tests /crypto-plants/tests
+COPY node_modules /crypto-plants/node_modules
 
 WORKDIR /crypto-plants
 

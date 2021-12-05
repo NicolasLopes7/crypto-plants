@@ -47,7 +47,7 @@
     "start": "node ./dist/server.js",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "test-unit": "yarn base && jest --config tests/unit/jest.config.js --forceExit",
+    "test-unit": "jest --config tests/unit/jest.config.js --forceExit",
     "test-integration": "yarn base && jest --config tests/integration/jest.config.js --runInBand --detectOpenHandles",
     "test": "yarn test-unit && yarn test-integration",
     "ci": "yarn base && yarn format && yarn test"

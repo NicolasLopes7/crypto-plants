@@ -6,9 +6,8 @@ services:
       context: .
       dockerfile: ./Dockerfile.local
     volumes:
-      - .:/crypto-plants
+      - ./:/crypto-plants
       - .env.example:/crypto-plants/.env
-      - /crypto-plants/node_modules
     environment:
       - DOTENV_PATH=.env
 
