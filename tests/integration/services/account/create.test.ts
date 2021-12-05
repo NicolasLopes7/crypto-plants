@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import createAccount from '../../../src/services/account/create';
-
-const prisma = new PrismaClient();
+import createAccount from '../../../../src/services/account/create';
+import truncateDatabase from '../../helpers/truncateDatabase';
 
 describe('Create Account', () => {
   const wallet = '0xB0C052c271296f18Be342AcC3Ba8E3ACe9907d90';
 
-  beforeAll(async () => prisma.account.deleteMany({ where: {} }));
+  beforeAll(async () => truncateDatabase());
 
   test('Should create a new account with correct params', async () => {
     const createdUser = await createAccount(wallet);
@@ -21,7 +19,7 @@ describe('Create Account', () => {
     try {
       await createAccount(wallet);
     } catch (error) {
-      expect(error.message).toBe('A user with the same wallet has alredy been created')
+      expect(error.message).toBe('A user with the same wallet has alredy been created');
     }
   });
 });

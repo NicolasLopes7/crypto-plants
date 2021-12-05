@@ -1,8 +1,11 @@
-import { Account } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 
-export default ({ id }: Account) => {
+interface Args {
+  id: string;
+}
+
+export default ({ id }: Args) => {
   const { secret, expiresIn } = authConfig.jwt;
 
   const token = sign({ id }, secret, {

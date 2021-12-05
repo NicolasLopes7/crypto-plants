@@ -6,3 +6,5 @@ export const create = Joi.object({
     wallet: walletRule.required(),
   }).required(),
 });
+
+export const auth = create;
